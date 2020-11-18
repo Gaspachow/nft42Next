@@ -8,8 +8,8 @@ export default function Home() {
   const state = router.query.state
   const fetch = require('node-fetch');
   const data = {
-    client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
+    client_id: process.env.CLIENT_ID as string,
+    client_secret: process.env.CLIENT_SECRET as string,
     grant_type:'authorization_code',
     code: code,
     redirect_uri:'https://nft42-next.vercel.app/',
