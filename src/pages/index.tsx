@@ -1,6 +1,29 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 export default function Home() {
+  const router = useRouter();
+  console.log("booboo" + router.query.desk)
+  const code = router.query.code as string
+  const state = router.query.state
+  const fetch = require('node-fetch');
+  const data = {
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLINET_SECRET,
+    grant_type:'authorization_code',
+    code: code,
+    redirect_uri:'https://axieanalytics.herokuapp.com',
+    scope:'identify',
+  }
+  fetch('https://discord.com/api/oauth2/token', {
+    method: 'POST',
+    body: new URLSearchParams(data),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  })
+	.then(res => res.json())
+	.then(console.log);
   return (
     <div className="container">
       <Head>
