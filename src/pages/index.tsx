@@ -1,31 +1,22 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import {fetchAccessToken} from './api/discord-auth'
+import {useEffect} from 'react'
 
 export default function Home() {
   const router = useRouter();
   console.log("booboo" + router.query.code as string)
-  const code = router.query.code as string
-  const state = router.query.state
-  fetchAccessToken(code)
-  // const fetch = require('node-fetch');
-  // const data = {
-  //   client_id: process.env.CLIENT_ID as string,
-  //   client_secret: process.env.CLIENT_SECRET as string,
-  //   grant_type:'authorization_code',
-  //   code: code,
-  //   redirect_uri:'https://nft42-next.vercel.app/',
-  //   scope:'identify',
-  // }
-  // fetch('https://discord.com/api/oauth2/token', {
-  //   method: 'POST',
-  //   body: new URLSearchParams(data),
-  //   headers: {
-  //     'Content-Type': 'application/x-www-form-urlencoded',
-  //   },
-  // })
-	// .then(res => res.json())
-	// .then(console.log);
+
+  const { query: { code } } = useRouter();
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const accessToken = await fetchAccessToken(code)
+      console.log(accessToken)
+    }    
+    
+    fetchToken();
+  }, [code])
   return (
     <div className="container">
       <Head>

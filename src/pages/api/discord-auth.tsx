@@ -9,7 +9,7 @@ export const fetchAccessToken = (code) => {
 		redirect_uri:'https://nft42-next.vercel.app/',
 		scope:'identify',
 	}
-	fetch('https://discord.com/api/oauth2/token', {
+	return fetch('https://discord.com/api/oauth2/token', {
 		method: 'POST',
 		body: new URLSearchParams(data),
 		headers: {
@@ -17,5 +17,4 @@ export const fetchAccessToken = (code) => {
 		},
 	})
 	.then(res => res.json())
-	.then(console.log);
 }
