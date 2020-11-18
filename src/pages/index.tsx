@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 export default function Home() {
   const router = useRouter();
-  console.log("booboo" + router.query.desk)
+  console.log("booboo" + router.query.code as string)
   const code = router.query.code as string
   const state = router.query.state
   const fetch = require('node-fetch');
@@ -12,7 +12,7 @@ export default function Home() {
     client_secret: process.env.CLIENT_SECRET,
     grant_type:'authorization_code',
     code: code,
-    redirect_uri:'https://axieanalytics.herokuapp.com',
+    redirect_uri:'https://nft42-next.vercel.app/',
     scope:'identify',
   }
   fetch('https://discord.com/api/oauth2/token', {
