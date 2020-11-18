@@ -9,7 +9,7 @@ export default function Home() {
   const fetch = require('node-fetch');
   const data = {
     client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLINET_SECRET,
+    client_secret: process.env.CLIENT_SECRET,
     grant_type:'authorization_code',
     code: code,
     redirect_uri:'https://axieanalytics.herokuapp.com',
