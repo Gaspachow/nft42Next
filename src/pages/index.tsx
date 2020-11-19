@@ -5,7 +5,7 @@ import {useEffect} from 'react'
 
 export default function Home() {
   //console.log(testEnv())
-  // const { query: { code } } = useRouter();
+  const { query: { code } } = useRouter();
 
   //   useEffect(() => {
   //   const fetchToken = async () => {
@@ -16,14 +16,14 @@ export default function Home() {
   //   fetchToken();
   // })
 
-  // useEffect(() => {
-  //   const fetchToken = async () => {
-  //     const accessToken = await fetchAccessToken(code)
-  //     console.log(accessToken)
-  //   }    
+  useEffect(() => {
+    const fetchToken = async () => {
+      const accessToken = await testEnv(code as string)
+      console.log(accessToken)
+    }    
     
-  //   fetchToken();
-  // }, [code])
+    fetchToken();
+  }, [code])
   return (
     <div className="container">
       <Head>

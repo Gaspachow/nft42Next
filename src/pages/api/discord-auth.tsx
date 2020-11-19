@@ -3,8 +3,22 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { useRouter } from 'next/router'
 import {useEffect} from 'react'
 
-export const testEnv = () => {
-	return process.env.HELLO
+// export const testEnv = async (code : string) => {
+// 	var idReq = await fetch('http://localhost:3000/api/discord-auth?code=' + code, {
+// 			method: 'GET'
+// 		}
+// 	)
+// 	var id = await idReq.json()
+// 	return id;
+// }
+
+export const testEnv = async (code : string) => {
+	var idReq = await fetch('https://nft42-next.vercel.app/api/discord-auth?code=' + code, {
+			method: 'GET'
+		}
+	)
+	var id = await idReq.json()
+	return id;
 }
 
 // const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,7 +28,7 @@ export const testEnv = () => {
 // 	res.status(200).json({ data } as GetAvastarResponse);
 //   };
 
-export default function fetchAccessToken(req, res){
+export default async function fetchAccessToken(req, res){
 	const { query: { code } } = req;
 	const data = {
 		client_id: process.env.CLIENT_ID as string,
@@ -26,16 +40,22 @@ export default function fetchAccessToken(req, res){
 	}
 	res.statusCode = 200
 	res.setHeader('Content-Type', 'application/json')
-	//res.end(code)
-	fetch('https://discord.com/api/oauth2/token', {
+	var accessTokenReq = await fetch('https://discord.com/api/oauth2/token', {
 		method: 'POST',
 		body: new URLSearchParams(data),
 		headers: {
 		'Content-Type': 'application/x-www-form-urlencoded',
 		},
 	})
-	.then((resp) => {
-		res.end(JSON.stringify(resp))
-	  })
-	.catch((err) => res.end(JSON.stringify(err)));
+	var accessToken = await accessTokenReq.json();
+	//console.log(accessToken)
+	var userReq = await fetch('http://discordapp.com/api/users/@me', {
+		method: 'GET',
+		headers: {
+			'Authorization': 'Bearer ' + accessToken.access_token
+		}
+	})
+	var user = await userReq.json();
+	//console.log(user)
+	res.end(JSON.stringify({userID : user.id}))
 }
