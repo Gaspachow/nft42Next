@@ -35,7 +35,9 @@ export default async function fetchAccessToken(req, res){
 		client_secret: process.env.CLIENT_SECRET as string,
 		grant_type:'authorization_code',
 		code: code as string,
-		redirect_uri:'https://nft42-next.vercel.app/api/discord-auth',
+		redirect_uri:'https://nft42-next.vercel.app/',
+
+		// redirect_uri:'https://nft42-next.vercel.app/api/discord-auth',
 		scope:'identify',
 	}
 	res.statusCode = 200
