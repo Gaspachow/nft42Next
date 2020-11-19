@@ -19,3 +19,14 @@ const getQueryParams = (queryParams: ParsedUrlQuery) => {
   };
 
   export const getReqBaseUrl = (req?: NextApiRequest) => (req ? `http://${req.headers.host}` : '');
+
+//   export const requestTest = (
+// 	queryParams?,
+// 	req?: NextApiRequest
+//   ): Promise<any> => {
+// 	const defaultQuery = {};
+// 	const query = getQueryParams({ ...defaultQuery, ...queryParams });
+// 	console.info('query for avastars:', query);
+  
+// 	return makeRequest(`${getReqBaseUrl(req)}/api/getAvastars/?${query}`);
+//   };

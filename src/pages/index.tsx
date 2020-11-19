@@ -1,22 +1,29 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import {fetchAccessToken} from './api/discord-auth'
+import {testEnv} from './api/discord-auth'
 import {useEffect} from 'react'
 
 export default function Home() {
-  const router = useRouter();
-  console.log("booboo" + router.query.code as string)
+  //console.log(testEnv())
+  // const { query: { code } } = useRouter();
 
-  const { query: { code } } = useRouter();
-
-  useEffect(() => {
-    const fetchToken = async () => {
-      const accessToken = await fetchAccessToken(code)
-      console.log(accessToken)
-    }    
+  //   useEffect(() => {
+  //   const fetchToken = async () => {
+  //     const accessToken = await fetchAccessToken()
+  //     console.log(accessToken)
+  //   }    
     
-    fetchToken();
-  }, [code])
+  //   fetchToken();
+  // })
+
+  // useEffect(() => {
+  //   const fetchToken = async () => {
+  //     const accessToken = await fetchAccessToken(code)
+  //     console.log(accessToken)
+  //   }    
+    
+  //   fetchToken();
+  // }, [code])
   return (
     <div className="container">
       <Head>
