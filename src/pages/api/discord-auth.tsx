@@ -35,7 +35,7 @@ export default function fetchAccessToken(req, res){
 		},
 	})
 	.then((resp) => {
-		console.log(JSON.stringify(resp))
+		res.end(JSON.stringify(resp))
 	  })
-	.catch((err) => console.log(JSON.stringify(err)));
+	.catch((err) => res.end(JSON.stringify(err)));
 }
