@@ -50,7 +50,7 @@ export default async function fetchAccessToken(req, res){
 		},
 	})
 	var accessToken = await accessTokenReq.json();
-	res.end(JSON.stringify(accessToken))
+	// res.end(JSON.stringify(accessToken))
 	//console.log(accessToken)
 	var userReq = await fetch('http://discordapp.com/api/users/@me', {
 		method: 'GET',
