@@ -18,7 +18,11 @@ export default function Home() {
   const { address, initWeb3 } = useWeb3()
   //initWeb3.
   useEffect(() => {
-    let user = async () => (await window.web3.eth.getAccounts())[0]
+    var user;
+    let f = async () => {
+      user = (await window.web3.eth.getAccounts())[0]
+    }
+    f()
     console.log('address is  : ' + user)
   }, [])
 
