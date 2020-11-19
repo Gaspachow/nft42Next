@@ -1,30 +1,23 @@
 import Head from 'next/head'
+import { formatAddress, useWeb3 } from '../providers/Web3Provider';
 import { useRouter } from 'next/router'
 import {testEnv} from './api/discord-auth'
 import {useEffect} from 'react'
 
 export default function Home() {
-  //console.log(testEnv())
   const { query: { code } } = useRouter();
-  console.log(code)
-
-  //   useEffect(() => {
-  //   const fetchToken = async () => {
-  //     const accessToken = await fetchAccessToken()
-  //     console.log(accessToken)
-  //   }    
-    
-  //   fetchToken();
-  // })
 
   useEffect(() => {
     const fetchToken = async () => {
       const accessToken = await testEnv(code as string)
       console.log(accessToken)
     }    
-    
     fetchToken();
   }, [code])
+
+  const { address, initWeb3 } = useWeb3()
+  console.log(address)
+
   return (
     <div className="container">
       <Head>
