@@ -6,6 +6,7 @@ import {useEffect} from 'react'
 export default function Home() {
   //console.log(testEnv())
   const { query: { code } } = useRouter();
+  console.log(code)
 
   //   useEffect(() => {
   //   const fetchToken = async () => {
