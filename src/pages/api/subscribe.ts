@@ -10,7 +10,7 @@ import { Collection } from 'mongodb';
 export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
   const { address, signature, code } = req.body;
 
-  const signedAddress = recoverPersonalSignature({ data: SIGNATURE_MESSAGE as string, sig: signature as string });
+  const signedAddress = recoverPersonalSignature({ data: SIGNATURE_MESSAGE, sig: signature.result });
 
   let verified = false;
 
