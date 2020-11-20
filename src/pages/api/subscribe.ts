@@ -16,6 +16,10 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     verified = true;
   }
 
+  // DO USER ID FETCHING FROM DISCORD
+
+  // DO SOME STUFF ON MONGODB
+
   return res.status(200).json({
     status: 'Some status',
     data: {
