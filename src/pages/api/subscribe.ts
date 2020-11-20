@@ -14,7 +14,7 @@ const client = new MongoClient(process.env.MONGODB_URI as string, {
 export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
   const { address, signature, code } = req.body;
 
-  const signedAddress = recoverPersonalSignature({ data: SIGNATURE_MESSAGE, sig: signature.result });
+  const signedAddress = recoverPersonalSignature({ data: SIGNATURE_MESSAGE + address, sig: signature.result });
 
   let verified = false;
 
