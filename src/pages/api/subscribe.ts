@@ -4,8 +4,12 @@ import { SIGNATURE_MESSAGE } from '../../constants';
 import { connectDb } from '../../server/mongo';
 import {User} from '../../server/model'
 import { WithDb } from '../../types';
-import { Collection } from 'mongodb';
+import { Collection, MongoClient, Long } from 'mongodb';
 
+const client = new MongoClient(process.env.MONGODB_URI as string, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  });
 
 export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
   const { address, signature, code } = req.body;
@@ -47,24 +51,45 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
 		}
 	})
   var user = await userReq.json();
-  var id = user.id
+
 
   // DO SOME STUFF ON MONGODB
-  if (verified)
-    connectDb(async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
-      const newUser = {_id : id, address : signedAddress}
-    
-      const users: Collection<User> = req.db.collection('Users');
-      await users.insertOne(newUser);
-    
-      res.status(200)
-      res.end('ok')
-    });
+  if (verified) {
+    if (!client.isConnected()) {
+      console.log('Connect to DB');
+      await client.connect();
+    } else {
+      console.log('Already connected');
+    }
+    const id = Long.fromString(user.id.toString())
+    const db = client.db('RoleHandlerDatabase')
+    const users: Collection<User> = db.collection('Users');
+    const previousUser = await users.findOne({_id : id})
+    if (previousUser == null){
+      console.log('creating user')
+      await users.insertOne({_id: id, address: signedAddress});
+    }
+    else{
+      console.log('updating user')
+      await users.updateOne({_id: id}, {$set :{_id: id, address: signedAddress}})
+    }
+  }
+
+  // connectDb(async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
+  //   console.log('nani')
+  //   const newUser = {_id : 123, address : "hello"}
+  //   console.log('boo2')
+  //   const users: Collection<User> = req.db.collection('Users');
+  //   await users.insertOne(newUser);
+  
+  //   res.status(200)
+  //   res.end('ok')
+  // });
 
   return res.status(200).json({
     status: 'Some status',
     data: {
-      verified,
+      verified : true
     },
   });
 };

@@ -1,4 +1,6 @@
+import {Long} from "mongodb"
+
 export interface User {
-	_id: number
+	_id: Long
 	address: string
 }
