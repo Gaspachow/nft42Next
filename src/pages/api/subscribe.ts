@@ -50,15 +50,16 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
   var id = user.id
 
   // DO SOME STUFF ON MONGODB
-  connectDb(async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
-    const newUser = {_id : id, address : signedAddress}
-  
-    const users: Collection<User> = req.db.collection('Users');
-    await users.insertOne(newUser);
-  
-    res.status(200)
-    res.end('ok')
-  });
+  if (verified)
+    connectDb(async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
+      const newUser = {_id : id, address : signedAddress}
+    
+      const users: Collection<User> = req.db.collection('Users');
+      await users.insertOne(newUser);
+    
+      res.status(200)
+      res.end('ok')
+    });
 
   return res.status(200).json({
     status: 'Some status',

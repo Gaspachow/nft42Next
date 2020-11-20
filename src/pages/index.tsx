@@ -20,7 +20,7 @@ export default function Home() {
         address,
         code,
       };
-
+      console.log('signature is'  + endpointData.signature)
       const { status, data } = await makeRequest('/api/subscribe', {
         headers: {
           'Content-Type': 'application/json',
