@@ -13,7 +13,7 @@ export default function Home() {
   const { address, initWeb3, web3 } = useWeb3();
 
   const signMessage = () => {
-    web3.eth.personal.sign(web3.utils.fromUtf8(SIGNATURE_MESSAGE), address, async (err, res) => {
+    web3.eth.personal.sign(SIGNATURE_MESSAGE, address, async (err, res) => {
       const endpointData = {
         signature: res,
         address,
