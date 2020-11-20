@@ -27,7 +27,6 @@ export default function Home() {
         address,
         code,
       };
-      console.log('signature is'  + JSON.stringify(endpointData))
       const { status, data } = await makeRequest('/api/subscribe', {
         headers: {
           'Content-Type': 'application/json',
@@ -36,6 +35,7 @@ export default function Home() {
       });
 
       console.log(status, data);
+      success = data.verified;
     });
   };
 
