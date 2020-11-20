@@ -10,6 +10,7 @@
   "dependencies": {
     "eth-sig-util": "^3.0.0",
     "isomorphic-fetch": "^3.0.0",
+    "mongodb": "^3.6.3",
     "next": "^10.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
