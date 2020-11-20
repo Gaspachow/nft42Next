@@ -1,30 +1,35 @@
-import Head from 'next/head'
+import Head from 'next/head';
 import { formatAddress, useWeb3 } from '../providers/Web3Provider';
-import { useRouter } from 'next/router'
-import {testEnv} from './api/discord-auth'
-import {useEffect} from 'react'
+import { useRouter } from 'next/router';
+import { testEnv } from './api/discord-auth';
+import { useEffect } from 'react';
+import { makeRequest } from '../services/http';
+import { SIGNATURE_MESSAGE } from '../constants';
 
 export default function Home() {
-  const { query: { code } } = useRouter();
+  const {
+    query: { code },
+  } = useRouter();
+  const { address, initWeb3, web3 } = useWeb3();
 
-  useEffect(() => {
-    const fetchToken = async () => {
-      const accessToken = await testEnv(code as string)
-      console.log(accessToken)
-    }    
-    fetchToken();
-  }, [code])
+  const signMessage = () => {
+    web3.eth.personal.sign(web3.utils.fromUtf8(SIGNATURE_MESSAGE), address, async (err, res) => {
+      const endpointData = {
+        signature: res,
+        address,
+        code,
+      };
 
-  const { address, initWeb3 } = useWeb3()
-  //initWeb3.
-  useEffect(() => {
-    var user;
-    let f = async () => {
-      user = (await window.web3.eth.getAccounts())[0]
-    }
-    f()
-    console.log('address is  : ' + user)
-  }, [])
+      const { status, data } = await makeRequest('/api/subscribe', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(endpointData),
+      });
+
+      console.log(status, data);
+    });
+  };
 
   return (
     <div className="container">
@@ -34,6 +39,14 @@ export default function Home() {
       </Head>
 
       <main>
+        {!web3 && <button onClick={initWeb3}>Connect to web3</button>}
+        {address && (
+          <>
+            <p>Connected with {formatAddress(address)}</p>
+            <button onClick={signMessage}>Sign message</button>
+          </>
+        )}
+
         <h1 className="title">
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
@@ -53,10 +66,7 @@ export default function Home() {
             <p>Learn about Next.js in an interactive course with quizzes!</p>
           </a>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="card"
-          >
+          <a href="https://github.com/vercel/next.js/tree/master/examples" className="card">
             <h3>Examples &rarr;</h3>
             <p>Discover and deploy boilerplate example Next.js projects.</p>
           </a>
@@ -66,9 +76,7 @@ export default function Home() {
             className="card"
           >
             <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
+            <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>
           </a>
         </div>
       </main>
@@ -79,8 +87,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
+          Powered by <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
         </a>
       </footer>
 
@@ -159,8 +166,8 @@ export default function Home() {
           border-radius: 5px;
           padding: 0.75rem;
           font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+          font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+            Bitstream Vera Sans Mono, Courier New, monospace;
         }
 
         .grid {
@@ -220,9 +227,8 @@ export default function Home() {
         body {
           padding: 0;
           margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+            Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
         }
 
         * {
@@ -230,5 +236,5 @@ export default function Home() {
         }
       `}</style>
     </div>
-  )
+  );
 }
