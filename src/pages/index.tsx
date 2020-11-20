@@ -14,7 +14,11 @@ export default function Home() {
 
   const signMessage = () => {
     //@ts-ignore
-    web3.eth.personal.sign(web3.utils.fromUtf8(SIGNATURE_MESSAGE), address, async (err, res) => {
+    web3.currentProvider.sendAsync({
+      method: 'personal_sign',
+      params: [SIGNATURE_MESSAGE, address],
+      from: address,
+    }, async (err, res) => {
       const endpointData = {
         signature: res,
         address,
@@ -30,6 +34,22 @@ export default function Home() {
 
       console.log(status, data);
     });
+    // web3.eth.personal.sign(web3.utils.fromUtf8(SIGNATURE_MESSAGE), address, async (err, res) => {
+    //   const endpointData = {
+    //     signature: res,
+    //     address,
+    //     code,
+    //   };
+    //   console.log('signature is'  + endpointData.signature)
+    //   const { status, data } = await makeRequest('/api/subscribe', {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(endpointData),
+    //   });
+
+    //   console.log(status, data);
+    // });
   };
 
   return (
