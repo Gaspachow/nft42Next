@@ -5,11 +5,7 @@ const defaultOptions = {
 };
 
 export const makeRequest = (url: string, options?: RequestInit) => {
-  const { method } = { ...defaultOptions, ...options };
-
-  return fetch(url, {
-    method,
-  })
+  return fetch(url, { ...defaultOptions, ...options })
     .then((res) => {
       return res.json();
     })
