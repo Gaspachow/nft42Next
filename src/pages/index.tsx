@@ -13,6 +13,8 @@ export default function Home() {
   const { address, initWeb3, web3 } = useWeb3();
 
   const signMessage = () => {
+
+    console.log("message is " + SIGNATURE_MESSAGE)
     //@ts-ignore
     web3.currentProvider.sendAsync({
       method: 'personal_sign',
@@ -24,7 +26,7 @@ export default function Home() {
         address,
         code,
       };
-      console.log('signature is'  + endpointData.signature)
+      console.log('signature is'  + JSON.stringify(endpointData))
       const { status, data } = await makeRequest('/api/subscribe', {
         headers: {
           'Content-Type': 'application/json',
