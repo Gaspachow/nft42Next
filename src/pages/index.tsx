@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { formatAddress, useWeb3 } from '../providers/Web3Provider';
 import { useRouter } from 'next/router';
 import { testEnv } from './api/discord-auth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { makeRequest } from '../services/http';
 import { SIGNATURE_MESSAGE } from '../constants';
 
@@ -11,11 +11,9 @@ export default function Home() {
     query: { code },
   } = useRouter();
   const { address, initWeb3, web3 } = useWeb3();
-  var success = false;
+  const [success, setSuccess] = useState(false);
 
   const signMessage = () => {
-
-    console.log("message is " + SIGNATURE_MESSAGE  + address)
     //@ts-ignore
     web3.currentProvider.sendAsync({
       method: 'personal_sign',
@@ -33,9 +31,7 @@ export default function Home() {
         },
         body: JSON.stringify(endpointData),
       });
-
-      console.log(status, data);
-      success = data.verified;
+      setSuccess(data.verified);  
     });
   };
 
