@@ -1,10 +1,13 @@
 import Head from 'next/head';
 import { formatAddress, useWeb3 } from '../providers/Web3Provider';
 import { useRouter } from 'next/router';
-import { testEnv } from './api/discord-auth';
 import { useEffect, useState } from 'react';
 import { makeRequest } from '../services/http';
 import { SIGNATURE_MESSAGE } from '../constants';
+import { Button } from 'react-bootstrap';
+//import { CUSTOM_SIZES, pxToRem } from '../themes';
+//import { Box, Button, Container, Flex, useThemeUI } from 'theme-ui';
+
 
 export default function Home() {
   const {
@@ -52,11 +55,13 @@ export default function Home() {
           Get started by connecting your wallet then signing a message
         </p>
 
-        {!web3 && <button onClick={initWeb3}>Connect to web3</button>}
+        {!web3 &&<Button onClick={initWeb3} sx={{ fontSize: 3, ml: 3, minWidth: '10.5em' }}>
+                  Connect Wallet
+                </Button>}
         {address && (
           <>
             <p>Connected with {address}</p>
-            <button onClick={signMessage}>Sign message</button>
+            <Button onClick={signMessage}sx={{ fontSize: 3, ml: 3, minWidth: '10.5em' }}>Sign message</Button>
           </>
         )}
         {success && (
