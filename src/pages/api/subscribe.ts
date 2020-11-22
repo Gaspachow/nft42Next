@@ -32,7 +32,8 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
 		client_secret: process.env.CLIENT_SECRET as string,
 		grant_type:'authorization_code',
 		code: code as string,
-		redirect_uri:'https://nft42-next.vercel.app/',
+    redirect_uri:'https://nft42-next.vercel.app/',
+    //redirect_uri:'http://localhost:3000',
 		scope:'identify',
   }
   
@@ -43,7 +44,8 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
 		'Content-Type': 'application/x-www-form-urlencoded',
 		},
 	})
-	var accessToken = await accessTokenReq.json();
+  var accessToken = await accessTokenReq.json();
+  console.log(JSON.stringify(accessToken));
   var userReq = await fetch('http://discordapp.com/api/users/@me', {
 		method: 'GET',
 		headers: {
