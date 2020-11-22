@@ -26,6 +26,9 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
   }
 
   // DO USER ID FETCHING FROM DISCORD
+  console.log(process.env.CLIENT_ID)
+  console.log(process.env.CLIENT_SECRET)
+  console.log(process.env.MONGODB_URI)
 
   const data = {
 		client_id: process.env.CLIENT_ID as string,
