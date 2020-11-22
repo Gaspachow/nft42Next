@@ -51,7 +51,7 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
 		}
 	})
   var user = await userReq.json();
-
+  console.log(JSON.stringify(user));
 
   // DO SOME STUFF ON MONGODB
   if (verified) {
