@@ -72,25 +72,18 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
     const previousUser = await users.findOne({_id : id})
     if (previousUser == null){
       console.log('creating user')
-      await users.insertOne({_id: id, address: signedAddress});
+      var adds = [signedAddress];
+      await users.insertOne({_id: id, addresses: adds});
     }
     else{
       console.log('updating user')
-      await users.updateOne({_id: id}, {$set :{_id: id, address: signedAddress}})
+      if (previousUser.addresses.some(a => a !== signedAddress)){
+        var adds = previousUser.addresses
+        adds.push(signedAddress)
+        await users.updateOne({_id: id}, {$set :{_id: id, address: adds}})
+      }
     }
   }
-
-  // connectDb(async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
-  //   console.log('nani')
-  //   const newUser = {_id : 123, address : "hello"}
-  //   console.log('boo2')
-  //   const users: Collection<User> = req.db.collection('Users');
-  //   await users.insertOne(newUser);
-  
-  //   res.status(200)
-  //   res.end('ok')
-  // });
-
   return res.status(200).json({
     status: 'Some status',
     data: {
