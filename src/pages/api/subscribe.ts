@@ -80,7 +80,7 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
       if (previousUser.addresses.some(a => a !== signedAddress)){
         var adds = previousUser.addresses
         adds.push(signedAddress)
-        await users.updateOne({_id: id}, {$set :{_id: id, address: adds}})
+        await users.updateOne({_id: id}, {$set :{_id: id, addresses: adds}})
       }
     }
   }
