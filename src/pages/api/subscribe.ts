@@ -72,14 +72,14 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
     const previousUser = await users.findOne({_id : id})
     if (previousUser == null){
       console.log('creating user')
-      var adds = [signedAddress];
+      var adds = [signedAddress.toLocaleLowerCase()];
       await users.insertOne({_id: id, addresses: adds});
     }
     else{
       console.log('updating user')
-      if (previousUser.addresses.some(a => a !== signedAddress)){
+      if (previousUser.addresses.some(a => a !== signedAddress.toLocaleLowerCase())){
         var adds = previousUser.addresses
-        adds.push(signedAddress)
+        adds.push(signedAddress.toLocaleLowerCase())
         await users.updateOne({_id: id}, {$set :{_id: id, addresses: adds}})
       }
     }
