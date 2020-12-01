@@ -69,25 +69,35 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
     const id = Long.fromString(user.id.toString())
     const db = client.db('RoleHandlerDatabase')
     const users: Collection<User> = db.collection('Users');
-    const previousUser = await users.findOne({_id : id})
-    if (previousUser == null){
-      console.log('creating user')
-      var adds = [signedAddress.toLocaleLowerCase()];
-      await users.insertOne({_id: id, addresses: adds});
-    }
-    else{
-      console.log('updating user')
-      if (previousUser.addresses.some(a => a !== signedAddress.toLocaleLowerCase())){
-        var adds = previousUser.addresses
-        adds.push(signedAddress.toLocaleLowerCase())
-        await users.updateOne({_id: id}, {$set :{_id: id, addresses: adds}})
+    const addressOwner = await users.find({addresses: {$in:[signedAddress.toLocaleLowerCase()]}});
+    const arr = await addressOwner.toArray()
+    if (arr.length > 1)
+      verified = false;
+    if (arr.length == 0 || (arr.length == 1 && arr[0]._id.toString() == id.toString())) {
+      const previousUser = await users.findOne({_id : id})
+      if (previousUser == null){
+        console.log('creating user')
+        var adds = [signedAddress.toLocaleLowerCase()];
+        await users.insertOne({_id: id, addresses: adds});
+      }
+      else{
+        if (!previousUser.addresses.some(a => a == signedAddress.toLocaleLowerCase())){
+          console.log('updating user')
+          var adds = previousUser.addresses
+          adds.push(signedAddress.toLocaleLowerCase())
+          await users.updateOne({_id: id}, {$set :{_id: id, addresses: adds}})
+        }
+        else
+          verified = false;
       }
     }
+    else
+      verified = false;
   }
   return res.status(200).json({
     status: 'Some status',
     data: {
-      verified : true
+      verified : verified
     },
   });
 };
