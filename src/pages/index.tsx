@@ -15,6 +15,8 @@ export default function Home() {
   } = useRouter();
   const { address, initWeb3, web3 } = useWeb3();
   const [success, setSuccess] = useState(false);
+  const [err, setErr] = useState(false);
+  const [errMsg, setMsg] = useState("")
 
   const signMessage = () => {
     //@ts-ignore
@@ -35,6 +37,9 @@ export default function Home() {
         body: JSON.stringify(endpointData),
       });
       setSuccess(data.verified);  
+      if (data.msg.length > 0)
+        setMsg(data.msg)
+        setErr(true)
     });
   };
 
@@ -67,6 +72,11 @@ export default function Home() {
         {success && (
           <>
           <p> Authentification successful, you may close this page!</p>
+          </>
+        )}
+        {err && (
+          <>
+          <p> Error: {errMsg}</p>
           </>
         )}
       </main>
