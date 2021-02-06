@@ -36,8 +36,8 @@ export default function Home() {
         },
         body: JSON.stringify(endpointData),
       });
-      setSuccess(data.verified);  
-      if (data.msg.length > 0)
+      setSuccess(data.verified);
+      if (!data.verified && data.msg.length > 0)
         setMsg(data.msg)
         setErr(true)
     });
@@ -71,7 +71,7 @@ export default function Home() {
         )}
         {success && (
           <>
-          <p> Authentification successful, you may close this page!</p>
+          <p> Authentification successful, you may return to discord!</p>
           </>
         )}
         {err && (
