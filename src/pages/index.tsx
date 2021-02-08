@@ -37,9 +37,10 @@ export default function Home() {
         body: JSON.stringify(endpointData),
       });
       setSuccess(data.verified);
-      if (!data.verified && data.msg.length > 0)
+      if (!data.verified && data.msg.length > 0){
         setMsg(data.msg)
         setErr(true)
+      }
     });
   };
 
