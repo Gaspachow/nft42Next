@@ -5,6 +5,7 @@ import { connectDb } from '../../server/mongo';
 import {User} from '../../server/model'
 import { WithDb } from '../../types';
 import { Collection, MongoClient, Long } from 'mongodb';
+import { ethers } from 'ethers';
 
 const client = new MongoClient(process.env.MONGODB_URI as string, {
   useNewUrlParser: true,
@@ -12,9 +13,11 @@ const client = new MongoClient(process.env.MONGODB_URI as string, {
   });
 
 export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
+  // temporary:
   const { address, signature, code } = req.body;
 
-  const signedAddress = recoverPersonalSignature({ data: SIGNATURE_MESSAGE + address, sig: signature.result });
+  // const signedAddress = recoverPersonalSignature({ data: SIGNATURE_MESSAGE + address, sig: signature.result });
+  const signedAddress = ethers.utils.verifyMessage(SIGNATURE_MESSAGE + address, signature);
 
   let verified = false;
   var msg = "";
@@ -26,7 +29,6 @@ export default async (req: NextApiRequest & WithDb, res: NextApiResponse) => {
   }
   else
     msg = "Signature invalid"
-
 
   // DO USER ID FETCHING FROM DISCORD
   console.log(process.env.CLIENT_ID)
