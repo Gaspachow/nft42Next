@@ -71,7 +71,7 @@ export default function Home() {
   return (
       <div className="container">
         <Head>
-          <title>Create Next App</title>
+          <title>NFT42</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -87,16 +87,19 @@ export default function Home() {
 
           {!account &&
           <>
-                  <Button style={{ margin: '10px' }} onClick={() => injected && activateWallet(injected)} sx={{ fontSize: 3, ml: 3, minWidth: '10.5em' }}>
+                  <Button style={{ margin: '10px', width: '300px', display: 'flex', justifyContent: 'space-between' }} onClick={() => injected && activateWallet(injected)} sx={{ fontSize: 3, ml: 3, minWidth: '10.5em' }}>
                     Connect With MetaMask
+                    <img  className="walletLogo" src="/logos/metamask.svg"/>
                   </Button>
 
-                  <Button style={{ margin: '10px' }} onClick={() => walletConnect && activateWallet(walletConnect)} sx={{ fontSize: 3, ml: 3, minWidth: '10.5em' }}>
-                  Connect With Wallet Connect
+                  <Button style={{ margin: '10px', width: '300px', display: 'flex', justifyContent: 'space-between' }} onClick={() => walletConnect && activateWallet(walletConnect)} sx={{ fontSize: 3, ml: 3, minWidth: '10.5em' }}>
+                    Connect With Wallet Connect
+                    <img  className="walletLogo" src="/logos/walletconnect.svg"/>
                   </Button>
 
-                  <Button style={{ margin: '10px' }} onClick={() => walletLink && activateWallet(walletLink)} sx={{ fontSize: 3, ml: 3, minWidth: '10.5em' }}>
-                  Connect With Coinbase Wallet
+                  <Button style={{ margin: '10px', width: '300px', display: 'flex', justifyContent: 'space-between' }} onClick={() => walletLink && activateWallet(walletLink)} sx={{ fontSize: 3, ml: 3, minWidth: '10.5em' }}>
+                    Connect With Coinbase Wallet
+                    <img  className="walletLogo" src="/logos/coinbase.svg"/>
                   </Button>
           </>
           }
@@ -116,6 +119,13 @@ export default function Home() {
             <p> Error: {errMsg}</p>
             </>
           )}
+          <p className="powered-title">Powered By:</p>
+          <div className="logos-container">
+            <a href="https://yieldguild.games/" target="_blank" style={{ width: '300px', maxWidth: '80%' }}>
+              <img className="logo-img" src="/logos/ygg.png" />
+            </a>
+            <img className="logo-img" src="/logos/nameless.svg" />
+          </div>
         </main>
 
         <style jsx>{`
@@ -247,6 +257,36 @@ export default function Home() {
               flex-direction: column;
             }
           }
+
+          .powered-title {
+            margin-top: 150px;
+            margin-bottom: 20px;
+
+            line-height: 1.5;
+            font-size: 1.5rem;
+          }
+
+          .logos-container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+          }
+
+          .logo-img {
+            width: 300px;
+            max-width: 80%;
+            margin: 20px;
+          }
+
+          .walletLogo {
+            margin-left: 20px;
+            max-width: 30px;
+          }
+
         `}</style>
 
         <style jsx global>{`
